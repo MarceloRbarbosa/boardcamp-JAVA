@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.boardcamp.api.dtos.rentalsDTO;
 import com.boardcamp.api.models.rentalsModel;
 import com.boardcamp.api.repositories.RentalsRepository;
-
+import com.boardcamp.api.services.RentalsService;
 import jakarta.validation.Valid;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -24,21 +23,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/rentals")
 public class RentalsController {
 
+    private final RentalsService rentalsService;
+
     final RentalsRepository rentalsRepository;
 
-    RentalsController(RentalsRepository rentalsRepository) {
+    RentalsController(RentalsRepository rentalsRepository, RentalsService rentalsService) {
         this.rentalsRepository = rentalsRepository;
+        this.rentalsService = rentalsService;
     }
 
     @GetMapping()
     public ResponseEntity<Object> getRentals() {
-        return ResponseEntity.status(HttpStatus.OK).body(rentalsRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(rentalsService.getRentals());
     }
 
     @PostMapping()
     public ResponseEntity<Object> postRental(@RequestBody @Valid rentalsDTO body) {
-        rentalsModel rental = new rentalsModel(body);
-        rentalsRepository.save(rental);
+        rentalsModel rental = rentalsService.postRental(body);
         return ResponseEntity.status(HttpStatus.CREATED).body(rental);
     }
 
@@ -51,14 +52,8 @@ public class RentalsController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteRental(@PathVariable("id") Long id) {
-        Optional<rentalsModel> rental = rentalsRepository.findById(id);
-
-        if (!rental.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Este cliente não existe");
-        } else {
-            rentalsRepository.deleteById(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }
+        rentalsService.deleteRental(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

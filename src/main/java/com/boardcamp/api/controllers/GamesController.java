@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.boardcamp.api.dtos.gamesDTO;
 import com.boardcamp.api.models.gamesModel;
-import com.boardcamp.api.repositories.GamesRepository;
+import com.boardcamp.api.services.GamesService;
 
 import jakarta.validation.Valid;
 
@@ -19,22 +19,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/games")
 public class GamesController {
 
-    final GamesRepository gamesRepository;
+    final GamesService gamesService;
 
-    GamesController(GamesRepository gamesRepository) {
-        this.gamesRepository = gamesRepository;
+    GamesController(GamesService gamesService) {
+        this.gamesService = gamesService;
     }
 
     @GetMapping()
     public ResponseEntity<Object> getGames() {
-        return ResponseEntity.status(HttpStatus.OK).body(gamesRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(gamesService.getGames());
     }
 
     @PostMapping()
     public ResponseEntity<Object> postGames(@RequestBody @Valid gamesDTO body) {
-        gamesModel game = new gamesModel(body);
-        gamesRepository.save(game);
-        return ResponseEntity.status(HttpStatus.CREATED).body(body);
+        gamesModel game = gamesService.postGames(body);
+        return ResponseEntity.status(HttpStatus.CREATED).body(game);
     }
 
 }
