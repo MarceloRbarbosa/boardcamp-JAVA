@@ -10,7 +10,10 @@ import com.boardcamp.api.repositories.RentalsRepository;
 import jakarta.validation.Valid;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,14 +31,15 @@ public class RentalsController {
     }
 
     @GetMapping()
-    public List<rentalsModel> getRentals() {
-        return rentalsRepository.findAll();
+    public ResponseEntity<Object> getRentals() {
+        return ResponseEntity.status(HttpStatus.OK).body(rentalsRepository.findAll());
     }
 
     @PostMapping()
-    public void postRental(@RequestBody @Valid rentalsDTO body) {
+    public ResponseEntity<Object> postRental(@RequestBody @Valid rentalsDTO body) {
         rentalsModel rental = new rentalsModel(body);
         rentalsRepository.save(rental);
+        return ResponseEntity.status(HttpStatus.CREATED).body(rental);
     }
 
     @PostMapping("/{id}/return")
@@ -46,8 +50,15 @@ public class RentalsController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteRental(@PathVariable("id") Long id) {
-        rentalsRepository.deleteById(id);
+    public ResponseEntity<Object> deleteRental(@PathVariable("id") Long id) {
+        Optional<rentalsModel> rental = rentalsRepository.findById(id);
+
+        if (!rental.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Este cliente não existe");
+        } else {
+            rentalsRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
     }
 
 }

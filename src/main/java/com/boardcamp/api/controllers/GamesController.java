@@ -9,8 +9,8 @@ import com.boardcamp.api.repositories.GamesRepository;
 
 import jakarta.validation.Valid;
 
-import java.util.List;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,14 +26,15 @@ public class GamesController {
     }
 
     @GetMapping()
-    public List<gamesModel> getGames() {
-        return gamesRepository.findAll();
+    public ResponseEntity<Object> getGames() {
+        return ResponseEntity.status(HttpStatus.OK).body(gamesRepository.findAll());
     }
 
     @PostMapping()
-    public void postGame(@RequestBody @Valid gamesDTO body) {
+    public ResponseEntity<Object> postGames(@RequestBody @Valid gamesDTO body) {
         gamesModel game = new gamesModel(body);
         gamesRepository.save(game);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
 }
