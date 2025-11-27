@@ -1,5 +1,7 @@
 package com.boardcamp.api.models;
 
+import com.boardcamp.api.dtos.customersDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,4 +33,10 @@ public class customerModel {
     @Size(min = 11, max = 11, message = "O CPF deve ter exatamente 11 caracteres")
     @Column(length = 11, nullable = false)
     private String cpf;
+
+    public customerModel(customersDTO dto) {
+        this.name = dto.getName();
+        this.phone = dto.getPhone();
+        this.cpf = dto.getCpf();
+    }
 }

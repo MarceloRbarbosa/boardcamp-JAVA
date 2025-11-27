@@ -3,8 +3,11 @@ package com.boardcamp.api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.boardcamp.api.dtos.customersDTO;
 import com.boardcamp.api.models.customerModel;
 import com.boardcamp.api.repositories.CustomerRepository;
+
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +44,8 @@ public class CustomerController {
     }
 
     @PostMapping()
-    public String postCustomer(@RequestBody String body) {
-        return body;
+    public void postCustomer(@RequestBody @Valid customersDTO body) {
+        customerModel customer = new customerModel(body);
+        customerRepository.save(customer);
     }
 }

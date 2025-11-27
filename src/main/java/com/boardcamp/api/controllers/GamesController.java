@@ -3,8 +3,11 @@ package com.boardcamp.api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.boardcamp.api.dtos.gamesDTO;
 import com.boardcamp.api.models.gamesModel;
 import com.boardcamp.api.repositories.GamesRepository;
+
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -28,8 +31,9 @@ public class GamesController {
     }
 
     @PostMapping()
-    public String postGame(@RequestBody String body) {
-        return body;
+    public void postGame(@RequestBody @Valid gamesDTO body) {
+        gamesModel game = new gamesModel(body);
+        gamesRepository.save(game);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.boardcamp.api.models;
 
+import com.boardcamp.api.dtos.rentalsDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,6 +26,9 @@ public class rentalsModel {
     private Integer customerId;
 
     @Column(nullable = false)
+    private Integer gameId;
+
+    @Column(nullable = false)
     private String rentDate;
 
     @Column(nullable = false)
@@ -37,4 +42,11 @@ public class rentalsModel {
 
     @Column(nullable = false)
     private Double delayFee;
+
+    public rentalsModel(rentalsDTO dto) {
+        this.customerId = dto.getCustomerId();
+        this.gameId = dto.getGameId();
+        this.daysRented = dto.getDaysRented();
+    }
+
 }

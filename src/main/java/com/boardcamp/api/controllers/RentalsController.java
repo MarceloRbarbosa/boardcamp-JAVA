@@ -3,8 +3,12 @@ package com.boardcamp.api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.boardcamp.api.dtos.rentalsDTO;
 import com.boardcamp.api.models.rentalsModel;
 import com.boardcamp.api.repositories.RentalsRepository;
+
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,8 +33,9 @@ public class RentalsController {
     }
 
     @PostMapping()
-    public String postRental(@RequestBody String body) {
-        return body;
+    public void postRental(@RequestBody @Valid rentalsDTO body) {
+        rentalsModel rental = new rentalsModel(body);
+        rentalsRepository.save(rental);
     }
 
     @PostMapping("/{id}/return")
