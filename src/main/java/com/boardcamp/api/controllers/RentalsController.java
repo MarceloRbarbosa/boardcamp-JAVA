@@ -2,6 +2,11 @@ package com.boardcamp.api.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.boardcamp.api.models.rentalsModel;
+import com.boardcamp.api.repositories.RentalsRepository;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,9 +17,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/rentals")
 public class RentalsController {
 
+    final RentalsRepository rentalsRepository;
+
+    RentalsController(RentalsRepository rentalsRepository) {
+        this.rentalsRepository = rentalsRepository;
+    }
+
     @GetMapping()
-    public String getRentals() {
-        return "get rentals";
+    public List<rentalsModel> getRentals() {
+        return rentalsRepository.findAll();
     }
 
     @PostMapping()
