@@ -39,14 +39,15 @@ public class RentalsController {
     }
 
     @PostMapping("/{id}/return")
-    public String putMethodName(@PathVariable("id") Long id, @RequestBody String body) {
-
+    public String finishRental(@PathVariable("id") Long id, @RequestBody String body) {
+        // TO DO implementar essa funcionabilidade
+        // ########################################################################
         return "entrega do aluguel" + body;
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRental(@PathVariable("id") Long id) {
-        return "Deletando " + id;
+    public void deleteRental(@PathVariable("id") Long id) {
+        rentalsRepository.deleteById(id);
     }
 
 }
