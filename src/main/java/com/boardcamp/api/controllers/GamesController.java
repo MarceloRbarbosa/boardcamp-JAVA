@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/games")
 public class GamesController {
 
-    final GamesService gamesService;
+    private final GamesService gamesService;
 
     public GamesController(GamesService gamesService) {
         this.gamesService = gamesService;
