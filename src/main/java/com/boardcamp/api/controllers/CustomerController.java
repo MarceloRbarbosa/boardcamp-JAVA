@@ -21,31 +21,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/customers")
 public class CustomerController {
 
-    final CustomersService customerService;
+    private final CustomersService customerService;
 
-    CustomerController(CustomersService customerService) {
+    public CustomerController(CustomersService customerService) {
         this.customerService = customerService;
     }
 
     @GetMapping()
-    public ResponseEntity<Object> getCustomers() {
-        return ResponseEntity.status(HttpStatus.OK).body(customerService.getCustomers());
+    public ResponseEntity<customerModel> getCustomers() {
+        customerModel customers = customerService.getCustomers();
+        return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getCustomerById(@PathVariable("id") Long id) {
-        Optional<customerModel> customer = customerService.getCustomerById(id);
-
-        if (!customer.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Este cliente não existe");
-        } else {
-            return ResponseEntity.status(HttpStatus.OK).body(customer.get());
-        }
+    public ResponseEntity<customerModel> getCustomerById(@PathVariable("id") Long id) {
+        customerModel customer = customerService.getCustomerById(id);
+        return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
     @PostMapping()
-    public ResponseEntity<Object> postCustomer(@RequestBody @Valid customersDTO body) {
-        customerService.postCustomer(body);
-        return ResponseEntity.status(HttpStatus.CREATED).body(body);
+    public ResponseEntity<customerModel> postCustomer(@RequestBody @Valid customersDTO body) {
+        customerModel createdCustomer = customerService.postCustomer(body);
+        return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
     }
 }
