@@ -21,19 +21,19 @@ public class GamesController {
 
     final GamesService gamesService;
 
-    GamesController(GamesService gamesService) {
+    public GamesController(GamesService gamesService) {
         this.gamesService = gamesService;
     }
 
     @GetMapping()
-    public ResponseEntity<Object> getGames() {
-        return ResponseEntity.status(HttpStatus.OK).body(gamesService.getGames());
+    public List<gamesDTO> getGames() {
+        return gamesService.getGames();
     }
 
     @PostMapping()
-    public ResponseEntity<Object> postGames(@RequestBody @Valid gamesDTO body) {
-        gamesModel game = gamesService.postGames(body);
-        return ResponseEntity.status(HttpStatus.CREATED).body(game);
+    public ResponseEntity<gamesDTO> postGames(@RequestBody @Valid gamesDTO body) {
+        gamesDTO createdGame = gamesService.postGames(body);
+        return new ResponseEntity<>(createdGame, HttpStatus.CREATED);
     }
 
 }
