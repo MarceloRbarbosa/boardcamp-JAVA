@@ -8,4 +8,6 @@ import com.boardcamp.api.models.rentalsModel;
 @Repository
 public interface RentalsRepository extends JpaRepository<rentalsModel, Long> {
 
+    long countByGameIdAndReturnDateIsNull(Long gameId);
+
 }

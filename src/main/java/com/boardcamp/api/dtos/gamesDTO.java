@@ -1,20 +1,23 @@
 package com.boardcamp.api.dtos;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class gamesDTO {
 
-    @NotBlank
+    @NotBlank(message = "Name must not be blank")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "image must not be blank")
     private String image;
 
-    @NotBlank
+    @NotNull(message = "StockTotal must not be null")
     private Integer stockTotal;
 
-    @NotBlank
-    private Double pricePerDay;
+    @NotNull(message = "pricePerDay must not be null")
+    private Integer pricePerDay;
 }

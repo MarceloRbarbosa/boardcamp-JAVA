@@ -31,7 +31,7 @@ public class customerModel {
     private String phone;
 
     @Size(min = 11, max = 11, message = "O CPF deve ter exatamente 11 caracteres")
-    @Column(length = 11, nullable = false)
+    @Column(length = 11, nullable = false, unique = true)
     private String cpf;
 
     public customerModel(customersDTO dto) {

@@ -2,18 +2,20 @@ package com.boardcamp.api.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
 import lombok.Data;
 
 @Data
 public class customersDTO {
 
-    @NotBlank
+    @NotBlank(message = "Name must not be blank")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "phone must not be blank")
     @Size(min = 10, max = 11)
     private String phone;
 
+    @NotBlank(message = "Cpf must not be blank")
     @Size(min = 11, max = 11)
     private String cpf;
 }

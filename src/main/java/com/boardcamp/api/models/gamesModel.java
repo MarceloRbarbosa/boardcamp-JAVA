@@ -22,17 +22,17 @@ public class gamesModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "image")
     private String image;
 
-    @Column(nullable = false)
+    @Column(name = "stockTotal")
     private Integer stockTotal;
 
-    @Column(nullable = false)
-    private double pricePerDay;
+    @Column(name = "pricePerDay")
+    private Integer pricePerDay;
 
     public gamesModel(gamesDTO dto) {
         this.name = dto.getName();
