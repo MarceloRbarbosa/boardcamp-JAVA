@@ -2,8 +2,6 @@ package com.boardcamp.api.models;
 
 import java.time.LocalDate;
 
-import com.boardcamp.api.dtos.rentalsDTO;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -48,13 +46,5 @@ public class rentalsModel {
     @ManyToOne
     @JoinColumn(name = "gameId")
     private gamesModel game;
-
-    public rentalsModel(rentalsDTO dto) {
-        this.daysRented = dto.getDaysRented();
-        this.rentDate = LocalDate.now();
-        this.originalPrice = game.getPricePerDay() * dto.getDaysRented();
-        this.returnDate = null;
-        this.delayFee = 0;
-    }
 
 }
