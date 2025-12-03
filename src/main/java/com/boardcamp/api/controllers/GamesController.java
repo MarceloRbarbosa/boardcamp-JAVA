@@ -12,7 +12,6 @@ import com.boardcamp.api.services.GamesService;
 
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,14 +29,18 @@ public class GamesController {
     }
 
     @GetMapping()
-    public List<GameResponseDTO> getGames() {
-        return gamesService.getGames();
+    public ResponseEntity<List<GameResponseDTO>> getGames() {
+        List<gamesModel> games = gamesService.getGames();
+        List<GameResponseDTO> response = games.stream()
+                .map(GameResponseDTO::new)
+                .toList();
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping()
     public ResponseEntity<GameResponseDTO> postGames(@RequestBody @Valid gamesDTO body) {
-        GameResponseDTO createdGame = gamesService.postGames(body);
-        return new ResponseEntity<>(createdGame, HttpStatus.CREATED);
+        gamesModel createdGame = gamesService.postGames(body);
+        return new ResponseEntity<>(new GameResponseDTO(createdGame), HttpStatus.CREATED);
     }
 
 }

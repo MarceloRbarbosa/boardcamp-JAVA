@@ -26,7 +26,7 @@ public class RentalResponseDTO {
         this.id = rentalsModel.getId();
         this.rentDate = rentalsModel.getRentDate();
         this.daysRented = rentalsModel.getDaysRented();
-        this.returnDate = rentalsModel.getRentDate();
+        this.returnDate = rentalsModel.getReturnDate();
         this.originalPrice = rentalsModel.getOriginalPrice();
         this.delayFee = rentalsModel.getDelayFee();
         this.customer = new customerResponseDTO(rentalsModel.getCustomer());

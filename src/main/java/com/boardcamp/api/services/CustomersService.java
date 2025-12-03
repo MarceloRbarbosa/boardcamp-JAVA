@@ -1,14 +1,13 @@
 package com.boardcamp.api.services;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.boardcamp.api.dtos.customersDTO;
 import com.boardcamp.api.exceptions.ConflictException;
 import com.boardcamp.api.exceptions.EmptyFieldException;
+import com.boardcamp.api.exceptions.InvalidCpfException;
 import com.boardcamp.api.exceptions.ResourceNotFoundException;
 import com.boardcamp.api.models.customerModel;
 import com.boardcamp.api.repositories.CustomerRepository;
@@ -26,24 +25,18 @@ public class CustomersService {
         return customerRepository.findAll();
     }
 
-    public Optional<customerModel> getCustomerById(Long id) {
-        Optional<customerModel> customer = customerRepository.findById(id);
-
-        if (!customer.isPresent()) {
-            return Optional.empty();
-        } else {
-            return customer;
-        }
+    public customerModel getCustomerById(Long id) {
+        return customerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
     }
 
     public customerModel postCustomer(customersDTO body) {
 
         validateName(body);
         validateCpf(body.getCpf());
+        validatePhone(body.getPhone());
 
         customerModel customer = new customerModel(body);
-        customer.setName(body.getName());
-        customer.setCpf(body.getCpf());
 
         return customerRepository.save(customer);
     }
@@ -55,13 +48,19 @@ public class CustomersService {
         }
     }
 
+    private void validatePhone(String phone) {
+        if (phone == null || phone.length() < 10 || phone.length() > 11) {
+            throw new InvalidCpfException("Phone must have 10 or 11 digits");
+        }
+    }
+
     private void validateCpf(String cpf) {
 
         if (cpf == null || cpf.length() != 11) {
-            throw new IllegalArgumentException("Cpf must have 11 digits");
+            throw new InvalidCpfException("Cpf must have 11 digits");
         }
 
-        if (CustomerRepository.existsByCpf(cpf)) {
+        if (customerRepository.existsByCpf(cpf)) {
             throw new ConflictException("This cpf already exists");
         }
     }

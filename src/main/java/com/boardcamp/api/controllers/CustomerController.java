@@ -3,12 +3,13 @@ package com.boardcamp.api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.boardcamp.api.services.CustomersService;
+import com.boardcamp.api.dtos.customerResponseDTO;
 import com.boardcamp.api.dtos.customersDTO;
 import com.boardcamp.api.models.customerModel;
 
 import jakarta.validation.Valid;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,15 +29,19 @@ public class CustomerController {
     }
 
     @GetMapping()
-    public ResponseEntity<customerModel> getCustomers() {
-        customerModel customers = customerService.getCustomers();
-        return new ResponseEntity<>(customers, HttpStatus.OK);
+    public ResponseEntity<List<customerResponseDTO>> getCustomers() {
+        List<customerModel> customers = customerService.getCustomers();
+        List<customerResponseDTO> response = customers.stream()
+                .map(customer -> new customerResponseDTO(customer))
+                .toList();
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<customerModel> getCustomerById(@PathVariable("id") Long id) {
+    public ResponseEntity<customerResponseDTO> getCustomerById(@PathVariable("id") Long id) {
         customerModel customer = customerService.getCustomerById(id);
-        return new ResponseEntity<>(customer, HttpStatus.OK);
+        return ResponseEntity.ok(new customerResponseDTO(customer));
     }
 
     @PostMapping()

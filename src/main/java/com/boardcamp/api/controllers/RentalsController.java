@@ -3,9 +3,9 @@ package com.boardcamp.api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.boardcamp.api.dtos.RentalResponseDTO;
 import com.boardcamp.api.dtos.rentalsDTO;
-import com.boardcamp.api.models.rentalsModel;
-import com.boardcamp.api.repositories.RentalsRepository;
+
 import com.boardcamp.api.services.RentalsService;
 import jakarta.validation.Valid;
 
@@ -31,20 +31,21 @@ public class RentalsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<rentalsDTO>> getRentals() {
-        List<rentalsDTO> rentals = rentalsService.getRentals();
+    public ResponseEntity<List<RentalResponseDTO>> getRentals() {
+        List<RentalResponseDTO> rentals = rentalsService.getRentals();
         return ResponseEntity.ok(rentals);
     }
 
     @PostMapping
-    public ResponseEntity<rentalsModel> postRental(@RequestBody @Valid rentalsDTO body) {
-        rentalsModel createdRental = rentalsService.postRental(body);
+    public ResponseEntity<RentalResponseDTO> postRental(@RequestBody @Valid rentalsDTO body) {
+        RentalResponseDTO createdRental = rentalsService.postRental(body);
         return new ResponseEntity<>(createdRental, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/return")
-    public ResponseEntity<rentalsDTO> returnRental(@PathVariable("id") Long id) {
-        rentalsDTO rentalsDTO = rentalsService.returnRental(id);
+    public ResponseEntity<RentalResponseDTO> returnRental(@PathVariable("id") Long id) {
+        RentalResponseDTO response = rentalsService.returnRental(id);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")

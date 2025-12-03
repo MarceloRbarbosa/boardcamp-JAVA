@@ -39,11 +39,11 @@ public class GameResponseDTO {
         return image;
     }
 
-    public int getStockTotal() {
+    public Integer getStockTotal() {
         return stockTotal;
     }
 
-    public int getPricePerDay() {
+    public Integer getPricePerDay() {
         return pricePerDay;
     }
 }

@@ -3,9 +3,7 @@ package com.boardcamp.api.services;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.boardcamp.api.dtos.RentalResponseDTO;
@@ -19,7 +17,7 @@ import com.boardcamp.api.exceptions.UnprocessableEntityException;
 import com.boardcamp.api.models.customerModel;
 import com.boardcamp.api.models.gamesModel;
 import com.boardcamp.api.models.rentalsModel;
-import com.boardcamp.api.repositories.CustomerRepository;
+
 import com.boardcamp.api.repositories.RentalsRepository;
 
 @Service
@@ -35,11 +33,15 @@ public class RentalsService {
         this.gamesService = gamesService;
     }
 
-    public List<rentalsModel> getRentals() {
-        return rentalsRepository.findAll();
+    public List<RentalResponseDTO> getRentals() {
+        List<rentalsModel> rentals = rentalsRepository.findAll();
+
+        return rentals.stream()
+                .map(RentalResponseDTO::new)
+                .toList();
     }
 
-    public rentalsModel postRental(rentalsDTO body) {
+    public RentalResponseDTO postRental(rentalsDTO body) {
 
         validateRentalDTO(body);
 
@@ -53,14 +55,15 @@ public class RentalsService {
 
         rentalsModel rental = new rentalsModel();
         rental.setRentDate(rentDate);
-        rental.setReturnDate(rentDate);
-        rental.setDaysRented(originalPrice);
+        rental.setDaysRented(body.getDaysRented());
+        rental.setReturnDate(null);
         rental.setOriginalPrice(originalPrice);
-        rental.setDelayFee(originalPrice);
+        rental.setDelayFee(0);
         rental.setCustomer(customer);
         rental.setGame(game);
 
-        return rentalsRepository.save(rental);
+        rentalsModel saved = rentalsRepository.save(rental);
+        return new RentalResponseDTO(saved);
     }
 
     private void validateRentalDTO(rentalsDTO body) {
@@ -94,7 +97,7 @@ public class RentalsService {
         rentalsRepository.deleteById(id);
     }
 
-    public rentalsDTO returnRental(Long id) {
+    public RentalResponseDTO returnRental(Long id) {
         rentalsModel returnModel = rentalsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Rental not found with id: " + id));
 
