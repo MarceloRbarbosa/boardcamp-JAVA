@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.boardcamp.api.dtos.RentalResponseDTO;
 import com.boardcamp.api.dtos.rentalsDTO;
-import com.boardcamp.api.exceptions.ConflictException;
 import com.boardcamp.api.exceptions.EmptyFieldException;
 import com.boardcamp.api.exceptions.GameUnavailableException;
 import com.boardcamp.api.exceptions.InvalidGameIdException;
@@ -99,7 +98,7 @@ public class RentalsService {
                 .orElseThrow(() -> new ResourceNotFoundException("Rental not found"));
 
         if (rental.getReturnDate() != null) {
-            throw new ConflictException("Cannot delete a rental that has been returned.");
+            throw new NegativeValueException("Cannot delete a rental that has been returned.");
         }
 
         rentalsRepository.delete(rental);
