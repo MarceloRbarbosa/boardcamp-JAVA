@@ -46,7 +46,7 @@ public class GamesService {
 
     public gamesModel getGameById(Long id) {
         return gamesRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Game not foud"));
+                .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
     }
 
 }
