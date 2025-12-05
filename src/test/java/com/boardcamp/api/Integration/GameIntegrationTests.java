@@ -1,5 +1,6 @@
 package com.boardcamp.api.Integration;
 
+<<<<<<< HEAD
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -15,10 +16,19 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.boardcamp.api.dtos.gamesDTO;
+=======
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.resttestclient.TestRestTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+>>>>>>> c41f94755857be919b0cb40883556f41916d3e5e
 import com.boardcamp.api.repositories.CustomerRepository;
 import com.boardcamp.api.repositories.GamesRepository;
 import com.boardcamp.api.repositories.RentalsRepository;
 
+<<<<<<< HEAD
 import tools.jackson.databind.ObjectMapper;
 
 @SpringBootTest
@@ -31,15 +41,30 @@ public class GameIntegrationTests {
 
     @Autowired
     private GamesRepository gamesRepository;
+=======
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+public class GameIntegrationTests {
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+>>>>>>> c41f94755857be919b0cb40883556f41916d3e5e
 
     @Autowired
     private CustomerRepository customerRepository;
 
     @Autowired
+<<<<<<< HEAD
     private RentalsRepository rentalsRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
+=======
+    private GamesRepository gamesRepository;
+
+    @Autowired
+    private RentalsRepository rentalsRepository;
+>>>>>>> c41f94755857be919b0cb40883556f41916d3e5e
 
     @BeforeEach
     void cleanUpDb() {
@@ -47,6 +72,7 @@ public class GameIntegrationTests {
         gamesRepository.deleteAll();
         rentalsRepository.deleteAll();
     }
+<<<<<<< HEAD
 
     @Test
     void givenValidGame_whenPostGame_thenReturns201() throws Exception {
@@ -97,4 +123,6 @@ public class GameIntegrationTests {
         mockMvc.perform(get("/games"))
                 .andExpect(status().isOk());
     }
+=======
+>>>>>>> c41f94755857be919b0cb40883556f41916d3e5e
 }
